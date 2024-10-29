@@ -19,7 +19,7 @@ config :live_commerce, LiveCommerceWeb.Endpoint,
     formats: [html: LiveCommerceWeb.ErrorHTML, json: LiveCommerceWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: LiveCommerce.PubSub,
+  pubsub_server: System.get_env("APP_PUBSUB") |> String.to_atom(),
   live_view: [signing_salt: "x5eEyavE"]
 
 # Configures the mailer
@@ -60,6 +60,16 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :libcluster,
+  topologies: [
+    live_commerce_gossip: [
+      strategy: Elixir.Cluster.Strategy.Gossip,
+      config: [
+        port: 45892,
+        if_addr: "0.0.0.0",
+        multicast_addr: "255.255.255.255",
+        broadcast_only: true]]]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

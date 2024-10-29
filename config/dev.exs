@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :live_commerce, LiveCommerce.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "live_commerce_dev",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  hostname: System.get_env("POSTGRES_HOST"),
+  database: System.get_env("POSTGRES_DATABASE"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -19,7 +19,7 @@ config :live_commerce, LiveCommerce.Repo,
 config :live_commerce, LiveCommerceWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: System.get_env("APP_PORT")],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

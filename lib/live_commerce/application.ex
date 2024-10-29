@@ -7,11 +7,14 @@ defmodule LiveCommerce.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       LiveCommerceWeb.Telemetry,
       LiveCommerce.Repo,
       {DNSCluster, query: Application.get_env(:live_commerce, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: LiveCommerce.PubSub},
+      {Phoenix.PubSub, name: System.get_env("APP_PUBSUB") |> String.to_atom()},
+      {Cluster.Supervisor, [topologies, [name: LiveCommerce.ClusterSupervisor]]},
       # Start the Finch HTTP client for sending emails
       {Finch, name: LiveCommerce.Finch},
       # Start a worker by calling: LiveCommerce.Worker.start_link(arg)

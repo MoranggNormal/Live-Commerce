@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - PGPORT=${POSTGRES_PORT}
+    networks:
+      - artfulprint-server
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    cpus: 1
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    container_name: ${APP_CONTAINER_NAME}
+    build:
+      context: ./docker
+      dockerfile: app.dockerfile
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - artfulprint-server
+      - artfulprint-network
+    restart: "on-failure"
+    mem_limit: 1g
+    memswap_limit: 1g
+    cpus: 1
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      database:
+        condition: service_healthy
+
+networks:
+  artfulprint-server:
+    driver: bridge
+  artfulprint-network:
+    external: true
+
+volumes:
+  postgres_data:
+  pgadmin_data:
