@@ -19,7 +19,7 @@ config :live_commerce, LiveCommerceWeb.Endpoint,
     formats: [html: LiveCommerceWeb.ErrorHTML, json: LiveCommerceWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: System.get_env("APP_PUBSUB") |> String.to_atom(),
+  pubsub_server: System.get_env("APP_PUBSUB", "LiveCommerce.PubSub") |> String.to_atom(),
   live_view: [signing_salt: "x5eEyavE"]
 
 # Configures the mailer
