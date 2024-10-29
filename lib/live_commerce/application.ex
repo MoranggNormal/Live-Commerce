@@ -15,6 +15,7 @@ defmodule LiveCommerce.Application do
       {DNSCluster, query: Application.get_env(:live_commerce, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: System.get_env("APP_PUBSUB") |> String.to_atom()},
       {Cluster.Supervisor, [topologies, [name: LiveCommerce.ClusterSupervisor]]},
+      LiveCommerce.PubSubListener,
       # Start the Finch HTTP client for sending emails
       {Finch, name: LiveCommerce.Finch},
       # Start a worker by calling: LiveCommerce.Worker.start_link(arg)
