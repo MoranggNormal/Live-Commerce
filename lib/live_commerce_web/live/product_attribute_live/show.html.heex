@@ -1,0 +1,27 @@
+<.header>
+  Product attribute <%= @product_attribute.id %>
+  <:subtitle>This is a product_attribute record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/product_attributes/#{@product_attribute}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit product_attribute</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Attribute"><%= @product_attribute.attribute %></:item>
+  <:item title="Deleted at"><%= @product_attribute.deleted_at %></:item>
+</.list>
+
+<.back navigate={~p"/product_attributes"}>Back to product_attributes</.back>
+
+<.modal :if={@live_action == :edit} id="product_attribute-modal" show on_cancel={JS.patch(~p"/product_attributes/#{@product_attribute}")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductAttributeLive.FormComponent}
+    id={@product_attribute.id}
+    title={@page_title}
+    action={@live_action}
+    product_attribute={@product_attribute}
+    patch={~p"/product_attributes/#{@product_attribute}"}
+  />
+</.modal>

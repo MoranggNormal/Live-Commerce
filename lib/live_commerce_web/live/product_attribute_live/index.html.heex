@@ -1,0 +1,42 @@
+<.header>
+  Listing Product attributes
+  <:actions>
+    <.link patch={~p"/product_attributes/new"}>
+      <.button>New Product attribute</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="product_attributes"
+  rows={@streams.product_attributes}
+  row_click={fn {_id, product_attribute} -> JS.navigate(~p"/product_attributes/#{product_attribute}") end}
+>
+  <:col :let={{_id, product_attribute}} label="Attribute"><%= product_attribute.attribute %></:col>
+  <:col :let={{_id, product_attribute}} label="Deleted at"><%= product_attribute.deleted_at %></:col>
+  <:action :let={{_id, product_attribute}}>
+    <div class="sr-only">
+      <.link navigate={~p"/product_attributes/#{product_attribute}"}>Show</.link>
+    </div>
+    <.link patch={~p"/product_attributes/#{product_attribute}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, product_attribute}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: product_attribute.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="product_attribute-modal" show on_cancel={JS.patch(~p"/product_attributes")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductAttributeLive.FormComponent}
+    id={@product_attribute.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product_attribute={@product_attribute}
+    patch={~p"/product_attributes"}
+  />
+</.modal>

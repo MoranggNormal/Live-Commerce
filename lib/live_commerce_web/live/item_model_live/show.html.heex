@@ -1,0 +1,27 @@
+<.header>
+  Item model <%= @item_model.id %>
+  <:subtitle>This is a item_model record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/item_models/#{@item_model}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit item_model</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Value"><%= @item_model.value %></:item>
+  <:item title="Deleted at"><%= @item_model.deleted_at %></:item>
+</.list>
+
+<.back navigate={~p"/item_models"}>Back to item_models</.back>
+
+<.modal :if={@live_action == :edit} id="item_model-modal" show on_cancel={JS.patch(~p"/item_models/#{@item_model}")}>
+  <.live_component
+    module={LiveCommerceWeb.ItemModelLive.FormComponent}
+    id={@item_model.id}
+    title={@page_title}
+    action={@live_action}
+    item_model={@item_model}
+    patch={~p"/item_models/#{@item_model}"}
+  />
+</.modal>

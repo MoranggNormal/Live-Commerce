@@ -1,0 +1,42 @@
+<.header>
+  Listing Item models
+  <:actions>
+    <.link patch={~p"/item_models/new"}>
+      <.button>New Item model</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="item_models"
+  rows={@streams.item_models}
+  row_click={fn {_id, item_model} -> JS.navigate(~p"/item_models/#{item_model}") end}
+>
+  <:col :let={{_id, item_model}} label="Value"><%= item_model.value %></:col>
+  <:col :let={{_id, item_model}} label="Deleted at"><%= item_model.deleted_at %></:col>
+  <:action :let={{_id, item_model}}>
+    <div class="sr-only">
+      <.link navigate={~p"/item_models/#{item_model}"}>Show</.link>
+    </div>
+    <.link patch={~p"/item_models/#{item_model}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, item_model}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: item_model.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="item_model-modal" show on_cancel={JS.patch(~p"/item_models")}>
+  <.live_component
+    module={LiveCommerceWeb.ItemModelLive.FormComponent}
+    id={@item_model.id || :new}
+    title={@page_title}
+    action={@live_action}
+    item_model={@item_model}
+    patch={~p"/item_models"}
+  />
+</.modal>

@@ -1,0 +1,45 @@
+<.header>
+  Listing Products skus
+  <:actions>
+    <.link patch={~p"/products_skus/new"}>
+      <.button>New Product sku</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="products_skus"
+  rows={@streams.products_skus}
+  row_click={fn {_id, product_sku} -> JS.navigate(~p"/products_skus/#{product_sku}") end}
+>
+  <:col :let={{_id, product_sku}} label="Sku"><%= product_sku.sku %></:col>
+  <:col :let={{_id, product_sku}} label="Price"><%= product_sku.price %></:col>
+  <:col :let={{_id, product_sku}} label="Quantity"><%= product_sku.quantity %></:col>
+  <:col :let={{_id, product_sku}} label="Published"><%= product_sku.published %></:col>
+  <:col :let={{_id, product_sku}} label="Deleted at"><%= product_sku.deleted_at %></:col>
+  <:action :let={{_id, product_sku}}>
+    <div class="sr-only">
+      <.link navigate={~p"/products_skus/#{product_sku}"}>Show</.link>
+    </div>
+    <.link patch={~p"/products_skus/#{product_sku}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, product_sku}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: product_sku.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="product_sku-modal" show on_cancel={JS.patch(~p"/products_skus")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductSKULive.FormComponent}
+    id={@product_sku.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product_sku={@product_sku}
+    patch={~p"/products_skus"}
+  />
+</.modal>

@@ -1,0 +1,27 @@
+<.header>
+  Classification <%= @classification.id %>
+  <:subtitle>This is a classification record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/classifications/#{@classification}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit classification</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @classification.name %></:item>
+  <:item title="Deleted at"><%= @classification.deleted_at %></:item>
+</.list>
+
+<.back navigate={~p"/classifications"}>Back to classifications</.back>
+
+<.modal :if={@live_action == :edit} id="classification-modal" show on_cancel={JS.patch(~p"/classifications/#{@classification}")}>
+  <.live_component
+    module={LiveCommerceWeb.ClassificationLive.FormComponent}
+    id={@classification.id}
+    title={@page_title}
+    action={@live_action}
+    classification={@classification}
+    patch={~p"/classifications/#{@classification}"}
+  />
+</.modal>

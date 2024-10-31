@@ -1,0 +1,41 @@
+<.header>
+  Listing Wishlists
+  <:actions>
+    <.link patch={~p"/wishlists/new"}>
+      <.button>New Wishlist</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="wishlists"
+  rows={@streams.wishlists}
+  row_click={fn {_id, wishlist} -> JS.navigate(~p"/wishlists/#{wishlist}") end}
+>
+  <:col :let={{_id, wishlist}} label="Deleted at"><%= wishlist.deleted_at %></:col>
+  <:action :let={{_id, wishlist}}>
+    <div class="sr-only">
+      <.link navigate={~p"/wishlists/#{wishlist}"}>Show</.link>
+    </div>
+    <.link patch={~p"/wishlists/#{wishlist}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, wishlist}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: wishlist.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="wishlist-modal" show on_cancel={JS.patch(~p"/wishlists")}>
+  <.live_component
+    module={LiveCommerceWeb.WishlistLive.FormComponent}
+    id={@wishlist.id || :new}
+    title={@page_title}
+    action={@live_action}
+    wishlist={@wishlist}
+    patch={~p"/wishlists"}
+  />
+</.modal>

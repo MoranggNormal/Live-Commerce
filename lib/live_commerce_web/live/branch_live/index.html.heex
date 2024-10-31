@@ -1,0 +1,44 @@
+<.header>
+  Listing Branches
+  <:actions>
+    <.link patch={~p"/branches/new"}>
+      <.button>New Branch</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="branches"
+  rows={@streams.branches}
+  row_click={fn {_id, branch} -> JS.navigate(~p"/branches/#{branch}") end}
+>
+  <:col :let={{_id, branch}} label="Name"><%= branch.name %></:col>
+  <:col :let={{_id, branch}} label="Subdomain"><%= branch.subdomain %></:col>
+  <:col :let={{_id, branch}} label="Parent branch"><%= branch.parent_branch_id %></:col>
+  <:col :let={{_id, branch}} label="Deleted at"><%= branch.deleted_at %></:col>
+  <:action :let={{_id, branch}}>
+    <div class="sr-only">
+      <.link navigate={~p"/branches/#{branch}"}>Show</.link>
+    </div>
+    <.link patch={~p"/branches/#{branch}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, branch}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: branch.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="branch-modal" show on_cancel={JS.patch(~p"/branches")}>
+  <.live_component
+    module={LiveCommerceWeb.BranchLive.FormComponent}
+    id={@branch.id || :new}
+    title={@page_title}
+    action={@live_action}
+    branch={@branch}
+    patch={~p"/branches"}
+  />
+</.modal>

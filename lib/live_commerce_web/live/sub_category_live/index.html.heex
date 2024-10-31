@@ -1,0 +1,43 @@
+<.header>
+  Listing Sub categories
+  <:actions>
+    <.link patch={~p"/sub_categories/new"}>
+      <.button>New Sub category</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="sub_categories"
+  rows={@streams.sub_categories}
+  row_click={fn {_id, sub_category} -> JS.navigate(~p"/sub_categories/#{sub_category}") end}
+>
+  <:col :let={{_id, sub_category}} label="Name"><%= sub_category.name %></:col>
+  <:col :let={{_id, sub_category}} label="Description"><%= sub_category.description %></:col>
+  <:col :let={{_id, sub_category}} label="Deleted at"><%= sub_category.deleted_at %></:col>
+  <:action :let={{_id, sub_category}}>
+    <div class="sr-only">
+      <.link navigate={~p"/sub_categories/#{sub_category}"}>Show</.link>
+    </div>
+    <.link patch={~p"/sub_categories/#{sub_category}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, sub_category}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: sub_category.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="sub_category-modal" show on_cancel={JS.patch(~p"/sub_categories")}>
+  <.live_component
+    module={LiveCommerceWeb.SubCategoryLive.FormComponent}
+    id={@sub_category.id || :new}
+    title={@page_title}
+    action={@live_action}
+    sub_category={@sub_category}
+    patch={~p"/sub_categories"}
+  />
+</.modal>

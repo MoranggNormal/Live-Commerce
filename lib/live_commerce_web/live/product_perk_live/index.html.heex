@@ -1,0 +1,42 @@
+<.header>
+  Listing Product perks
+  <:actions>
+    <.link patch={~p"/product_perks/new"}>
+      <.button>New Product perk</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="product_perks"
+  rows={@streams.product_perks}
+  row_click={fn {_id, product_perk} -> JS.navigate(~p"/product_perks/#{product_perk}") end}
+>
+  <:col :let={{_id, product_perk}} label="Perk"><%= product_perk.perk %></:col>
+  <:col :let={{_id, product_perk}} label="Deleted at"><%= product_perk.deleted_at %></:col>
+  <:action :let={{_id, product_perk}}>
+    <div class="sr-only">
+      <.link navigate={~p"/product_perks/#{product_perk}"}>Show</.link>
+    </div>
+    <.link patch={~p"/product_perks/#{product_perk}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, product_perk}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: product_perk.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="product_perk-modal" show on_cancel={JS.patch(~p"/product_perks")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductPerkLive.FormComponent}
+    id={@product_perk.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product_perk={@product_perk}
+    patch={~p"/product_perks"}
+  />
+</.modal>
