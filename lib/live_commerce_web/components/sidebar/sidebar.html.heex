@@ -1,0 +1,31 @@
+<div
+  id="sideBar"
+  class="relative flex flex-col text-right flex-wrap bg-white border-r border-primary/10 p-6 py-16 pr-8 flex-none w-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster"
+>
+  <!-- sidebar content -->
+  <div class="flex flex-col">
+    <!-- link -->
+    <.link
+      navigate={~p"/"}
+      class="mb-3 capitalize font-medium text-lg hover:text-primary transition ease-in-out duration-500"
+    >
+      <i class="fad fa-home text-lg mr-2"></i> Home
+    </.link>
+    <!-- end link -->
+    <%= for group <- get_links() do %>
+      <p class="uppercase text-xs font-bold mb-4 mt-4 tracking-wider cursor-default text-primary border-b border-primary pb-2">
+        <%= group.name %>
+      </p>
+
+      <%= for link <- group.items do %>
+        <.link
+          navigate={link.path}
+          class={"mb-3 capitalize font-medium #{link.text_class} hover:text-primary transition ease-in-out duration-500"}
+        >
+          <i class={link.icon_class}></i> <%= link.label %>
+        </.link>
+      <% end %>
+    <% end %>
+  </div>
+  <!-- end sidebar content -->
+</div>

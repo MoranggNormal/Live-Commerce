@@ -45,9 +45,9 @@ services:
       - livecommerce-server
       - livecommerce-network
     restart: "on-failure"
-    mem_limit: 1g
-    memswap_limit: 1g
-    cpus: 1
+    mem_limit: 3g
+    memswap_limit: 4g
+    cpus: 2
     ports:
       - ${APP_PORT}:${APP_PORT}
     depends_on:

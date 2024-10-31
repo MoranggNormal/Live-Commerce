@@ -1,0 +1,21 @@
+<.live_component module={Home.Sidebar} id="Home.Sidebar" />
+
+<div class="bg-[#fafafa] flex-1 p-6 md:mt-16 md:ml-64">
+  <.live_component module={Home.General} id="Home.General" />
+  <.live_component module={Home.DailyResume} id="Home.DailyResume" />
+
+  <.live_component module={Home.SalesOverview} id="Home.SalesOverview" />
+  <.live_component module={Home.Orders.Status} id="Home.Orders.Status" />
+
+  <.live_component module={Home.QuickInfo} id="Home.QuickInfo" />
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-6">
+    <.live_component module={Home.Branches.Sales} id="Home.Branches.Sales" />
+    <.live_component module={Home.Orders.Summary} id="Home.Orders.Summary" />
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+    <.live_component module={Home.Products.MostSold} id="Home.Products.MostSold" />
+    <.live_component module={Home.Orders.Recent} id="Home.Orders.Recent" />
+  </div>
+</div>

@@ -20,8 +20,6 @@ defmodule LiveCommerceWeb.Router do
   scope "/", LiveCommerceWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-
     live "/branches", BranchLive.Index, :index
     live "/branches/new", BranchLive.Index, :new
     live "/branches/:id/edit", BranchLive.Index, :edit
@@ -185,6 +183,9 @@ defmodule LiveCommerceWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{LiveCommerceWeb.UserAuth, :ensure_authenticated}] do
+      live "/", HomeLive
+      live "/chat", ChatLive
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
