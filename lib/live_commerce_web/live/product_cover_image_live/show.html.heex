@@ -1,0 +1,27 @@
+<.header>
+  Product cover image <%= @product_cover_image.id %>
+  <:subtitle>This is a product_cover_image record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/product_cover_images/#{@product_cover_image}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit product_cover_image</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Cover"><%= @product_cover_image.cover %></:item>
+  <:item title="Deleted at"><%= @product_cover_image.deleted_at %></:item>
+</.list>
+
+<.back navigate={~p"/product_cover_images"}>Back to product_cover_images</.back>
+
+<.modal :if={@live_action == :edit} id="product_cover_image-modal" show on_cancel={JS.patch(~p"/product_cover_images/#{@product_cover_image}")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductCoverImageLive.FormComponent}
+    id={@product_cover_image.id}
+    title={@page_title}
+    action={@live_action}
+    product_cover_image={@product_cover_image}
+    patch={~p"/product_cover_images/#{@product_cover_image}"}
+  />
+</.modal>

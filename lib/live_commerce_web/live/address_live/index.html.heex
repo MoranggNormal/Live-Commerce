@@ -1,0 +1,49 @@
+<.header>
+  Listing Addresses
+  <:actions>
+    <.link patch={~p"/addresses/new"}>
+      <.button>New Address</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="addresses"
+  rows={@streams.addresses}
+  row_click={fn {_id, address} -> JS.navigate(~p"/addresses/#{address}") end}
+>
+  <:col :let={{_id, address}} label="Title"><%= address.title %></:col>
+  <:col :let={{_id, address}} label="Address line 1"><%= address.address_line_1 %></:col>
+  <:col :let={{_id, address}} label="Address line 2"><%= address.address_line_2 %></:col>
+  <:col :let={{_id, address}} label="Country"><%= address.country %></:col>
+  <:col :let={{_id, address}} label="City"><%= address.city %></:col>
+  <:col :let={{_id, address}} label="Postal code"><%= address.postal_code %></:col>
+  <:col :let={{_id, address}} label="Landmark"><%= address.landmark %></:col>
+  <:col :let={{_id, address}} label="Phone number"><%= address.phone_number %></:col>
+  <:col :let={{_id, address}} label="Deleted at"><%= address.deleted_at %></:col>
+  <:action :let={{_id, address}}>
+    <div class="sr-only">
+      <.link navigate={~p"/addresses/#{address}"}>Show</.link>
+    </div>
+    <.link patch={~p"/addresses/#{address}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, address}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: address.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="address-modal" show on_cancel={JS.patch(~p"/addresses")}>
+  <.live_component
+    module={LiveCommerceWeb.AddressLive.FormComponent}
+    id={@address.id || :new}
+    title={@page_title}
+    action={@live_action}
+    address={@address}
+    patch={~p"/addresses"}
+  />
+</.modal>

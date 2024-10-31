@@ -1,0 +1,42 @@
+<.header>
+  Listing Product cover images
+  <:actions>
+    <.link patch={~p"/product_cover_images/new"}>
+      <.button>New Product cover image</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="product_cover_images"
+  rows={@streams.product_cover_images}
+  row_click={fn {_id, product_cover_image} -> JS.navigate(~p"/product_cover_images/#{product_cover_image}") end}
+>
+  <:col :let={{_id, product_cover_image}} label="Cover"><%= product_cover_image.cover %></:col>
+  <:col :let={{_id, product_cover_image}} label="Deleted at"><%= product_cover_image.deleted_at %></:col>
+  <:action :let={{_id, product_cover_image}}>
+    <div class="sr-only">
+      <.link navigate={~p"/product_cover_images/#{product_cover_image}"}>Show</.link>
+    </div>
+    <.link patch={~p"/product_cover_images/#{product_cover_image}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, product_cover_image}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: product_cover_image.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="product_cover_image-modal" show on_cancel={JS.patch(~p"/product_cover_images")}>
+  <.live_component
+    module={LiveCommerceWeb.ProductCoverImageLive.FormComponent}
+    id={@product_cover_image.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product_cover_image={@product_cover_image}
+    patch={~p"/product_cover_images"}
+  />
+</.modal>
