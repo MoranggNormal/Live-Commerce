@@ -6,6 +6,7 @@ config :live_commerce, LiveCommerce.Repo,
   password: System.get_env("POSTGRES_PASSWORD"),
   hostname: System.get_env("POSTGRES_HOST"),
   database: System.get_env("POSTGRES_DATABASE"),
+  port: System.get_env("POSTGRES_PORT"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
