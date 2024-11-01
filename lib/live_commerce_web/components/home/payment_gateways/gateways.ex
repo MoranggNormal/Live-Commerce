@@ -1,4 +1,4 @@
-defmodule Home.Orders.Recent do
+defmodule Home.Payment.Gateways do
   use LiveCommerceWeb, :live_component
 
   def mount(socket) do

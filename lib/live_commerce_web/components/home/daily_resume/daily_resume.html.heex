@@ -7,8 +7,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span> Sales</h1>
-        <p class="text-xs"><span class="num-2"></span> payments</p>
+        <h1 class="font-semibold"><span class="num-2"></span>
+          <p><%= gettext("today.sales") %></p>
+        </h1>
+        <p class="text-xs"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.payments") %></p>
+        </p>
       </div>
     </div>
   </div>
@@ -22,8 +26,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span> Orders</h1>
-        <p class="text-xs"><span class="num-2"></span> items</p>
+        <h1 class="font-semibold"><span class="num-2"></span>
+          <p><%= gettext("today.orders") %></p>
+        </h1>
+        <p class="text-xs"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.orders.items") %></p>
+        </p>
       </div>
     </div>
   </div>
@@ -33,12 +41,16 @@
   <div class="card mt-6">
     <div class="card-body flex items-center">
       <div class="px-3 py-2 rounded bg-yellow-600 text-white mr-3">
-        <i class="fad fa-blog"></i>
+        <i class="fad fa-boxes"></i>
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span> posts</h1>
-        <p class="text-xs"><span class="num-2"></span> active</p>
+        <h1 class="font-semibold"><span class="num-2"></span>
+          <p><%= gettext("today.product.sales") %></p>
+        </h1>
+        <p class="text-xs"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.products.items") %></p>
+        </p>
       </div>
     </div>
   </div>
@@ -52,8 +64,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span> comments</h1>
-        <p class="text-xs"><span class="num-2"></span> approved</p>
+        <h1 class="font-semibold"><span class="num-2"></span>
+          <p><%= gettext("today.chats") %></p>
+        </h1>
+        <p class="text-xs"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.chats.items") %></p>
+        </p>
       </div>
     </div>
   </div>
@@ -67,8 +83,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span> memebrs</h1>
-        <p class="text-xs"><span class="num-2"></span> online</p>
+        <h1 class="font-semibold"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.users.hits") %></p>
+        </h1>
+        <p class="text-xs"><span class="num-2"></span>
+          <p><%= gettext("%{value} today.users.hits.items") %></p>
+        </p>
       </div>
     </div>
   </div>
