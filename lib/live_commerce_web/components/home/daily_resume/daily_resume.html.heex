@@ -7,11 +7,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span>
+        <h1 class="font-semibold"><span class="num-2">
+        </span>
           <p><%= gettext("today.sales") %></p>
         </h1>
         <p class="text-xs"><span class="num-2"></span>
-          <p><%= gettext("%{value} today.payments") %></p>
+          <p><%= gettext("%{value} today.payments", value: @today_paid_orders_count) %></p>
         </p>
       </div>
     </div>
@@ -26,11 +27,12 @@
       </div>
 
       <div class="flex flex-col">
-        <h1 class="font-semibold"><span class="num-2"></span>
+        <h1 class="font-semibold"><span class="num-2">
+        </span>
           <p><%= gettext("today.orders") %></p>
         </h1>
         <p class="text-xs"><span class="num-2"></span>
-          <p><%= gettext("%{value} today.orders.items") %></p>
+          <p><%= gettext("%{value} today.orders.count", value: @today_orders_count) %></p>
         </p>
       </div>
     </div>
@@ -40,16 +42,16 @@
     <!-- card -->
   <div class="card mt-6">
     <div class="card-body flex items-center">
-      <div class="px-3 py-2 rounded bg-yellow-600 text-white mr-3">
-        <i class="fad fa-boxes"></i>
+      <div class="px-3 py-2 rounded bg-teal-400 text-white mr-3">
+        <i class="fad fa-ticket"></i>
       </div>
 
       <div class="flex flex-col">
         <h1 class="font-semibold"><span class="num-2"></span>
-          <p><%= gettext("today.product.sales") %></p>
+          <p><%= gettext("today.voucher.uses") %></p>
         </h1>
         <p class="text-xs"><span class="num-2"></span>
-          <p><%= gettext("%{value} today.products.items") %></p>
+          <p><%= gettext("%{value} today.vouchers.count") %></p>
         </p>
       </div>
     </div>
@@ -68,7 +70,7 @@
           <p><%= gettext("today.chats") %></p>
         </h1>
         <p class="text-xs"><span class="num-2"></span>
-          <p><%= gettext("%{value} today.chats.items") %></p>
+          <p><%= gettext("%{value} today.chats.count") %></p>
         </p>
       </div>
     </div>
@@ -87,7 +89,7 @@
           <p><%= gettext("%{value} today.users.hits") %></p>
         </h1>
         <p class="text-xs"><span class="num-2"></span>
-          <p><%= gettext("%{value} today.users.hits.items") %></p>
+          <p><%= gettext("%{value} today.users.hits.count") %></p>
         </p>
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 <div class="bg-[#fafafa] flex-1 p-6 md:mt-16 md:ml-64">
   <.live_component module={Home.General} id="Home.General" current_user={@current_user} />
-  <.live_component module={Home.DailyResume} id="Home.DailyResume" />
+  <.live_component module={Home.DailyResume} id="Home.DailyResume" current_user={@current_user} />
 
   <.live_component module={Home.SalesOverview} id="Home.SalesOverview" />
   <.live_component module={Home.Orders.Status} id="Home.Orders.Status" />

@@ -57,6 +57,34 @@ defmodule LiveCommerce.Orders do
     |> Repo.one()
   end
 
+  def from_date_count_paid_orders_for_branch(date, branch_id) do
+    from(o in Order,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      where:
+        not is_nil(o.payment_id) and
+          u.branch_id == ^branch_id and
+          fragment("DATE(?) >= ?", o.inserted_at, ^date),
+      select: count(o.id)
+    )
+    |> Repo.one()
+  end
+
+  def from_date_count_orders_for_branch(date, branch_id) do
+    from(o in Order,
+      join: u in User,
+      on: o.user_id == u.id,
+      where: u.branch_id == ^branch_id,
+      where:
+          u.branch_id == ^branch_id and
+          fragment("DATE(?) >= ?", o.inserted_at, ^date),
+      select: count(o.id)
+    )
+    |> Repo.one()
+  end
+
   @doc """
   Gets a single order.
 
