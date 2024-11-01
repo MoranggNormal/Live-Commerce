@@ -309,6 +309,14 @@ defmodule LiveCommerce.Products do
     Repo.all(Product)
   end
 
+  def count_products_for_branch(branch_id) do
+    from(p in Product,
+      where: p.branch_id == ^branch_id,
+      select: count(p.id)
+    )
+    |> Repo.one()
+  end
+
   @doc """
   Gets a single product.
 

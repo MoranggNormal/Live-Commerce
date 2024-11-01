@@ -7,6 +7,8 @@ defmodule LiveCommerce.Orders do
   alias LiveCommerce.Repo
 
   alias LiveCommerce.Orders.Order
+  alias LiveCommerce.Payments.Payment
+  alias LiveCommerce.Accounts.User
 
   @doc """
   Returns the list of orders.
@@ -19,6 +21,40 @@ defmodule LiveCommerce.Orders do
   """
   def list_orders do
     Repo.all(Order)
+  end
+
+  def list_paid_orders_for_branch(branch_id) do
+    from(o in Order,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      where: not is_nil(o.payment_id) and u.branch_id == ^branch_id,
+      select: o
+    )
+    |> Repo.all()
+  end
+
+  def count_orders_for_branch(branch_id) do
+    from(o in Order,
+      join: u in User,
+      on: o.user_id == u.id,
+      where: u.branch_id == ^branch_id,
+      select: count(o.id)
+    )
+    |> Repo.one()
+  end
+
+  def count_paid_orders_for_branch(branch_id) do
+    from(o in Order,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      where: not is_nil(o.payment_id) and u.branch_id == ^branch_id,
+      select: count(o.id)
+    )
+    |> Repo.one()
   end
 
   @doc """
