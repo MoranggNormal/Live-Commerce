@@ -16,7 +16,7 @@
   <!-- end header -->
 
     <!-- body -->
-  <div class="card-body grid grid-cols-2 gap-6 lg:grid-cols-1">
+  <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
     <div class="p-8">
       <h1 class="h2">$ <%= gettext("{month.sales}") %></h1>
       <p class="text-black font-medium"><%= gettext("month.sales.label") %></p>
@@ -45,8 +45,8 @@
       <a href="#" class="btn-shadow mt-6"><%= gettext("view.details") %></a>
     </div>
 
-    <div class="">
-      <div id="sealsOverview"></div>
+    <div class="" >
+      <div phx-update="ignore" id="sealsOverview"></div>
     </div>
   </div>
   <!-- end body -->
