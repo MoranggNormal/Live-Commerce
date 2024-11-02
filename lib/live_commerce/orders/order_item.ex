@@ -2,6 +2,7 @@ defmodule LiveCommerce.Orders.OrderItem do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :quantity, :deleted_at, :order_id, :product_id, :products_sku_id, :inserted_at, :updated_at]}
   schema "order_items" do
     field :quantity, :integer
     field :deleted_at, :utc_datetime

@@ -22,10 +22,13 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 
+import Hooks from "./hooks/hooks";
+
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
+  hooks: Hooks,
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
 });
@@ -47,11 +50,6 @@ window.liveSocket = liveSocket;
 // Change
 var num = function (from, to) {
   return Math.floor(Math.random() * to) + from;
-};
-
-// array of number
-var numArr = function (length, max) {
-  return Array.from({ length: length }, () => Math.floor(Math.random() * max));
 };
 
 // return 2 digit
@@ -99,75 +97,8 @@ if (el_4.length > 0) {
 }
 // end 4 digits
 
-var options = function (type, height, numbers, color) {
-  return {
-    chart: {
-      height: height,
-      width: "100%",
-      type: type,
-      sparkline: {
-        enabled: true,
-      },
-      toolbar: {
-        show: false,
-      },
-    },
-    grid: {
-      show: false,
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    series: [
-      {
-        name: "serie1",
-        data: numbers,
-      },
-    ],
-    fill: {
-      colors: [color],
-    },
-    stroke: {
-      colors: [color],
-      width: 3,
-    },
-    yaxis: {
-      show: false,
-    },
-    xaxis: {
-      show: false,
-      labels: {
-        show: false,
-      },
-      axisBorder: {
-        show: false,
-      },
-      tooltip: {
-        enabled: false,
-      },
-    },
-  };
-};
-
-var sealsOverview = document.getElementById("sealsOverview");
-var sealsOverviewChart = new ApexCharts(
-  sealsOverview,
-  options("bar", "100%", numArr(20, 999), "#30aba0")
-);
-sealsOverviewChart.render();
-
 var options2 = {
   chart: {
-    //   height: 280,
     width: "100%",
     type: "area",
     toolbar: {

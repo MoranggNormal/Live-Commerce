@@ -2,6 +2,7 @@ defmodule LiveCommerce.Products.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :name, :description, :branch_id, :category_id, :classification_id, :inserted_at, :updated_at, :deleted_at]}
   schema "products" do
     field :name, :string
     field :description, :string

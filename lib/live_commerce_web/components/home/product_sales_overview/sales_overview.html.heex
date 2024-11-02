@@ -1,0 +1,64 @@
+<div class="card mt-6">
+  <!-- header -->
+  <div class="card-header flex flex-row justify-between">
+    <h1 class="h6"><%= gettext("products.sales.overview") %></h1>
+  </div>
+  <!-- end header -->
+
+  <!-- body -->
+  <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div class="p-8">
+      <h1 class="h2"><%= gettext("%{value} products", value: @growth_rate.current_month) %></h1>
+      <p class="text-black font-medium"><%= gettext("month.sold.products") %></p>
+
+      <div class="mt-20 mb-2 flex items-center">
+        <div class={"py-1 px-3 rounded mr-3 #{if @growth_rate.percentage_change >= 0, do: "bg-green-200 text-green-900", else: "bg-red-200 text-red-900"}"}>
+          <i class={"fa #{if @growth_rate.percentage_change >= 0, do: "fa-caret-up", else: "fa-caret-down"}"}></i>
+        </div>
+        <p class="text-black">
+          <span class={"num-2 #{if @growth_rate.percentage_change >= 0, do: "text-green-400", else: "text-red-400"}"}>
+            <%= Float.round(abs(@growth_rate.percentage_change), 2) %>% 
+          </span>
+          <span class={if @growth_rate.percentage_change >= 0, do: "text-green-400", else: "text-red-400"}>
+            <%= if @growth_rate.percentage_change >= 0 do %>
+              <%= gettext("more") %>
+            <% else %>
+              <%= gettext("less") %>
+            <% end %>
+            <%= gettext("sales.than.last.month") %>
+          </span>
+        </p>
+      </div>
+
+      <div class="mt-2 mb-2 flex items-center">
+        <div class="py-1 px-2 rounded mr-3 bg-blue-400 text-white">
+          <i class="fa fa-boxes"></i>
+        </div>
+        <p class="text-black">
+          <span class="num-2">
+            <%= abs(@growth_rate.product_difference) %> 
+          </span>
+          <span>
+            <%= if @growth_rate.percentage_change >= 0 do %>
+              <%= gettext("more") %>
+            <% else %>
+              <%= gettext("less") %>
+            <% end %>
+            <%= gettext("products.than.last.month") %>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="">
+      <div
+        id="most_sold_products"
+        data-title={gettext("ten.most.sold.products")}
+        data-quantity-label={gettext("quantity")}
+        phx-update="ignore"
+        phx-hook="MostSoldProductsChart"
+      ></div>
+    </div>
+  </div>
+  <!-- end body -->
+</div>

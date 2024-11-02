@@ -7,6 +7,10 @@ defmodule LiveCommerce.Products do
   alias LiveCommerce.Repo
 
   alias LiveCommerce.Products.Category
+  alias LiveCommerce.Orders.Order
+  alias LiveCommerce.Orders.OrderItem
+  alias LiveCommerce.Payments.Payment
+  alias LiveCommerce.Accounts.User
 
   @doc """
   Returns the list of categories.
@@ -307,6 +311,92 @@ defmodule LiveCommerce.Products do
   """
   def list_products do
     Repo.all(Product)
+  end
+
+  def list_most_sold_products_for_branch(branch_id) do
+    from(oi in OrderItem,
+      join: o in Order,
+      on: oi.order_id == o.id,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      join: pr in Product,
+      on: oi.product_id == pr.id,
+      where: not is_nil(o.payment_id) and u.branch_id == ^branch_id,
+      group_by: [oi.product_id, pr.name],
+      select: %{
+        product_id: oi.product_id,
+        name: pr.name,
+        total_quantity: sum(oi.quantity)
+      },
+      order_by: [desc: sum(oi.quantity)]
+    )
+    |> Repo.all()
+  end
+
+  def list_most_sold_products_for_branch(branch_id, date_start, date_end) do
+    from(oi in OrderItem,
+      join: o in Order,
+      on: oi.order_id == o.id,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      join: pr in Product,
+      on: oi.product_id == pr.id,
+      where:
+        not is_nil(o.payment_id) and
+          u.branch_id == ^branch_id and
+          o.inserted_at >= ^date_start and
+          o.inserted_at <= ^date_end,
+      group_by: [oi.product_id, pr.name],
+      select: %{
+        product_id: oi.product_id,
+        name: pr.name,
+        total_quantity: sum(oi.quantity)
+      },
+      order_by: [desc: sum(oi.quantity)]
+    )
+    |> Repo.all()
+  end
+
+  def list_total_products_sales_for_branch(branch_id) do
+    from(oi in OrderItem,
+      join: o in Order,
+      on: oi.order_id == o.id,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      join: pr in Product,
+      on: oi.product_id == pr.id,
+      where:
+        not is_nil(o.payment_id) and
+          u.branch_id == ^branch_id,
+      select: sum(oi.quantity)
+    )
+    |> Repo.one()
+  end
+
+  def list_total_products_sales_for_branch(branch_id, date_start, date_end) do
+    from(oi in OrderItem,
+      join: o in Order,
+      on: oi.order_id == o.id,
+      join: p in Payment,
+      on: o.payment_id == p.id,
+      join: u in User,
+      on: o.user_id == u.id,
+      join: pr in Product,
+      on: oi.product_id == pr.id,
+      where:
+        not is_nil(o.payment_id) and
+          u.branch_id == ^branch_id and
+          o.inserted_at >= ^date_start and
+          o.inserted_at <= ^date_end,
+      select: sum(oi.quantity)
+    )
+    |> Repo.one()
   end
 
   def count_products_for_branch(branch_id) do
